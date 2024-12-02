@@ -37,22 +37,43 @@ test(`happy path for ${username}`, async ({ page }) => {
     await page.click('#login-button');
 
     // Handling Login Errors
-    const errorCount = await page.locator('[data-test="error"]').count();
-    if (errorCount > 0) {
-      console.log(`Login failed for user: ${username}`);
+      // Definitions
+      const errorCount = await page.locator('[data-test="error"]').count();
+      const errorLocator = page.locator('[data-test="error"]');
+
+    if (errorCount > 0)
+    {
+      const errorMessage = await errorLocator.textContent();
+      if (username==='locked_out_user')
+      {
+        if (errorMessage && errorMessage.toString().toLowerCase().includes('locked out'))
+        {
+        console.error(`User ${username} is locked out as expected`);
+        }
+        else
+        {
+        console.error(`Unexpected error message for locked out user  ${username}. Error message: ${errorMessage}`);
+        }
+      }
+      else
+      {
+      console.error(`Login failed for user: ${username}. Error message: ${errorMessage}`);
+      }
       return;
     }
 
     // Checking Navigation after login
-    try{
+    try
+    {
     await expect(page).toHaveURL(/.*inventory/);
-      }
+    }
 
-      catch (error)
-        {
-          console.error('Navigation to inventory failed for user ${username}');
-          return
-        }
+    catch (error)
+    {
+    console.error(`Navigation to inventory failed for user ${username}`);
+    return
+    }
+
   // Selecting Item - Fleece Jacket
   await page.click('#add-to-cart-sauce-labs-fleece-jacket');
 
@@ -60,26 +81,30 @@ test(`happy path for ${username}`, async ({ page }) => {
   await page.click('#shopping_cart_container');
 
   // Checking Navigation after Cart
-  try{
-    await expect(page).toHaveURL(/.*cart/);
+  try
+  {
+  await expect(page).toHaveURL(/.*cart/);
   }
 
-  catch (error){
-    console.error( `Navigation to cart failed for user: ${username}`);
-    return;
+  catch (error)
+  {
+  console.error(`Navigation to cart failed for user: ${username}`);
+  return;
   }
 
   // Checking Out
   await page.click('#checkout');
 
     // Checking Navigation to Checkout
-    try{
-      await expect(page).toHaveURL(/.*one/);
+    try
+    {
+    await expect(page).toHaveURL(/.*one/);
     }
 
-    catch (error){
-      console.error( `Navigation to checkout page one failed for user: ${username}`);
-      return;
+    catch (error)
+    {
+    console.error( `Navigation to checkout page one failed for user: ${username}`);
+    return;
     }
 
     // Filling Checkout Information
@@ -96,11 +121,13 @@ test(`happy path for ${username}`, async ({ page }) => {
       await page.click('#continue');
 
       // Checking Navigation after Checkout
-      try{
-        await expect(page).toHaveURL(/.*two/);
+      try
+      {
+      await expect(page).toHaveURL(/.*two/);
       }
 
-      catch (error){
+      catch (error)
+      {
         console.error( `Navigation to checkout page two failed for user: ${username}`);
         return;
       }
@@ -109,13 +136,15 @@ test(`happy path for ${username}`, async ({ page }) => {
       await page.click('#finish');
 
     // Checking Navigation to Thank You
-    try{
-      await expect(page).toHaveURL(/.*complete/);
+    try
+    {
+    await expect(page).toHaveURL(/.*complete/);
     }
 
-    catch (error){
-      console.error( `Navigation to confirmation page failed for user: ${username}`);
-      return;
+    catch (error)
+    {
+    console.error( `Navigation to confirmation page failed for user: ${username}`);
+    return;
     }
 
   });

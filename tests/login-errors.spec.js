@@ -25,9 +25,8 @@ test('login errors', async ({ page }) => {
     const errorLocator = page.locator('.error-message-container.error');
 
     // String Validation - Creating test assuming current error message text is correct
-    await expect(errorLocator).toHaveText(/Sorry, this user has been locked out/);
+    await expect(errorLocator).toHaveText(/Sorry, this user has been locked out/);}
 
-  }
   catch (error)
   {
      console.error(`Test failed: ${error.message} for Locked User`);
@@ -48,9 +47,8 @@ test('login errors', async ({ page }) => {
     const errorLocator = page.locator('.error-message-container.error');
 
     // String Validation - Creating test assuming current error message text is correct
-    await expect(errorLocator).toHaveText(/Username and password do not match/);
+    await expect(errorLocator).toHaveText(/Username and password do not match/);}
 
-  }
   catch (error)
   {
      console.error(`Test failed: ${error.message} for Locked User`);
@@ -71,9 +69,8 @@ test('login errors', async ({ page }) => {
     const errorLocator = page.locator('.error-message-container.error');
 
     // String Validation - Creating test assuming current error message text is correct
-    await expect(errorLocator).toHaveText(/Username and password do not match/);
-
-  }
+    await expect(errorLocator).toHaveText(/Username and password do not match/);}
+    
   catch (error)
   {
      console.error(`Test failed: ${error.message} for Locked User`);
